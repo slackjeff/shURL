@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+#====================HEADER==========================================|
+#AUTOR
+# Jefferson 'Slackjeff' Rocha
+#
+#PROGRAMA
+# SHURL
+#
+#MODO DE USO
+# SHURL é um simples programa que encurta URL's utilizando a API
+# tinyurl.
+# Para conseguir encutar a sua URL você deve seguir no formato:
+# http OU https://www.slackjeff.com.br.
+#
+# EXEMPLO:
+#  shurl https://www.slackjeff.com.br
+#====================================================================|
+
+#=======================VARIAVEIS
+API="http://tinyurl.com/api-create.php?url=" # API tinyurl
+# Cores
+red='\033[31;1m'
+blue='\033[34;1m'
+end='\033[m'
+
+#=======================TESTES
+[[ -z "$1" ]] && { echo "Pass a URL"; exit 1 ;} # Nulo?
+
+# Existe http ou https?
+if ! echo "$1" | grep -qoE '^ht{2}ps?:\/\/.*'; then
+	echo -e "Good Format is: ${red}http or https://${end}www.example.com"
+	exit 1
+fi
+
+#======================INICIO
+# Encurtando URL e imprimindo
+generate_url=$(curl -s "${API}${1}")
+echo -e "${blue}Yor Shortener URL:${end} ${generate_url}"
